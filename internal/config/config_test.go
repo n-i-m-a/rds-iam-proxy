@@ -99,6 +99,48 @@ profiles:
 	}
 }
 
+func TestLoadAllowsDuplicateRDSDBUserAcrossProfiles(t *testing.T) {
+	t.Parallel()
+
+	tmp := t.TempDir()
+	caPath := filepath.Join(tmp, "ca.pem")
+	if err := os.WriteFile(caPath, []byte("dummy"), 0o644); err != nil {
+		t.Fatalf("write ca: %v", err)
+	}
+
+	cfgPath := filepath.Join(tmp, "config.yaml")
+	content := `
+profiles:
+  - name: p1
+    listen_addr: "127.0.0.1:3307"
+    proxy_user: local_proxy_1
+    proxy_password: one
+    rds_host: db-1
+    rds_region: eu-west-1
+    rds_db_user: shared_db_user
+    ca_bundle: ` + caPath + `
+  - name: p2
+    listen_addr: "127.0.0.1:3308"
+    proxy_user: local_proxy_2
+    proxy_password: two
+    rds_host: db-2
+    rds_region: eu-west-1
+    rds_db_user: shared_db_user
+    ca_bundle: ` + caPath + `
+`
+	if err := os.WriteFile(cfgPath, []byte(content), 0o644); err != nil {
+		t.Fatalf("write config: %v", err)
+	}
+
+	cfg, err := Load(cfgPath)
+	if err != nil {
+		t.Fatalf("expected duplicate rds_db_user to be allowed, got: %v", err)
+	}
+	if len(cfg.Profiles) != 2 {
+		t.Fatalf("expected 2 profiles, got %d", len(cfg.Profiles))
+	}
+}
+
 func TestValidateRuntimeRejectsNonLoopback(t *testing.T) {
 	t.Parallel()
 

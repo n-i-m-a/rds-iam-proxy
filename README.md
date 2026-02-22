@@ -94,7 +94,6 @@ Relative paths (including `ca_bundle`) are resolved from the directory containin
 - `proxy_user` and `rds_db_user` must be different (per profile)
 - If multiple profiles exist:
   - all `proxy_user` values must be unique
-  - all `rds_db_user` values must be unique
 - Selected profiles cannot reuse the same `listen_addr`
 
 ## Run Modes

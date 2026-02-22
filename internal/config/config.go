@@ -308,18 +308,12 @@ func validateUniqueUsernames(profiles []Profile) error {
 	}
 
 	proxyUsers := make(map[string]string, len(profiles))
-	rdsUsers := make(map[string]string, len(profiles))
 
 	for _, p := range profiles {
 		if prev, ok := proxyUsers[p.ProxyUser]; ok {
 			return fmt.Errorf("proxy_user %q is reused by profiles %q and %q; use unique proxy_user values per profile", p.ProxyUser, prev, p.Name)
 		}
 		proxyUsers[p.ProxyUser] = p.Name
-
-		if prev, ok := rdsUsers[p.RDSDBUser]; ok {
-			return fmt.Errorf("rds_db_user %q is reused by profiles %q and %q; use unique rds_db_user values per profile", p.RDSDBUser, prev, p.Name)
-		}
-		rdsUsers[p.RDSDBUser] = p.Name
 	}
 
 	return nil
