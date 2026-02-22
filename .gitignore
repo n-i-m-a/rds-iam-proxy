@@ -1,0 +1,7 @@
+config.yaml
+certs/*.pem
+!certs/.gitkeep
+bin/
+dist/
+.DS_Store
+scripts/test-real-local.env

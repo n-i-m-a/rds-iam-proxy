@@ -1,0 +1,2 @@
+# Placeholder to keep the certs directory in git.
+# Put your local RDS CA PEM file(s) here (ignored by .gitignore).

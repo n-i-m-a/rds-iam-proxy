@@ -1,0 +1,25 @@
+profiles:
+  - name: prod-reporting
+    listen_addr: "127.0.0.1:3307"
+    max_conns: 20
+    proxy_user: "local_proxy_prod"
+    proxy_password: "replace-with-strong-password"
+    rds_host: "prod-reporting.cluster-xxxx.us-east-1.rds.amazonaws.com"
+    rds_port: 3306
+    rds_region: "us-east-1"
+    rds_db_user: "iam_db_user"
+    aws_profile: "prod"
+    default_db: "analytics"
+    ca_bundle: "./certs/global-bundle.pem"
+
+  - name: staging-app
+    listen_addr: "127.0.0.1:3308"
+    max_conns: 20
+    proxy_user: "local_proxy_staging"
+    proxy_password: "replace-with-strong-password"
+    rds_host: "staging-app.cluster-yyyy.us-east-1.rds.amazonaws.com"
+    rds_region: "us-east-1"
+    rds_db_user: "iam_db_user_staging"
+    aws_profile: "staging"
+    # default_db omitted intentionally
+    ca_bundle: "./certs/global-bundle.pem"
